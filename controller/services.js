@@ -1,21 +1,18 @@
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
 const services = () => {
   return {
-    microservice1: (req, res) => {
-  
-      fetch("http://localhost:81/")
-        .then((result) => result.json())
-        .then((json) => {
-            console.log(json);
+    getEspecialidades: (req, res) => {
+      fetch('http://localhost:81/medicos/especialidades')
+        .then(result => result.json())
+        .then(json => {
+          console.log(json);
 
-
-            res.send(json.data)
-
+          res.send(json);
         })
-        .catch(e=>{
-            console.log(e);
-        })
+        .catch(e => {
+          console.log(e);
+        });
     },
   };
 };

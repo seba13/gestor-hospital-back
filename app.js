@@ -1,20 +1,19 @@
+import express from 'express';
+import { config } from 'dotenv';
+import morgan from 'morgan';
+import routerIndex from './routes/indexRouter.js';
+import cors from 'cors';
+const app = express();
 
-import express  from "express";
-import {config} from 'dotenv'
-import morgan from "morgan";
-import routerIndex from "./routes/indexRouter.js";
+app.use(cors());
 
-const app = express()
+config({ path: './.env' });
 
+const port = process.env.PORT_GATEWAY || 5000;
 
-config({'path': './.env'})
-
-
-const port = process.env.PORT_GATEWAY  || 5000
-
-app.use(routerIndex)
-app.use(morgan('combined'))
+app.use(routerIndex);
+app.use(morgan('combined'));
 
 app.listen(port, () => {
-    console.log("server on port "+port);
-})
+  console.log('server on port ' + port);
+});

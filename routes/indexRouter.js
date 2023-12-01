@@ -1,12 +1,7 @@
-import { Router } from "express";
+import { Router } from 'express';
 import services from '../controller/services.js';
-const routerIndex = Router()
+const routerIndex = Router();
 
-
-
-routerIndex.get('/', services().microservice1)
-
-
-
+routerIndex.get('/medicos/especialidades', services().getEspecialidades);
 
 export default routerIndex;
