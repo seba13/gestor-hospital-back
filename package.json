@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "nodemon app.js",
     "m1": "nodemon node services/empleados/app.js",
-    "npm-run-all": "npm-run-all --parallel  dev m1",
+    "m2": "nodemon node services/citas/app.js",
+    "npm-run-all": "npm-run-all --parallel  dev m1 m2",
     "format": "prettier --write .",
     "lint": "eslint --fix . --ext .js"
   },
@@ -19,7 +20,9 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.6.5",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "uuid":"*",
+    "bcrypt": "*"
   },
   "devDependencies": {
     "eslint": "^8.54.0",
