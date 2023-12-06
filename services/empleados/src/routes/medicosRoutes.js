@@ -7,5 +7,13 @@ medicosRoutes.get(
   '/medicos/especialidades',
   medicosController().obtenerEspecialidades,
 );
+medicosRoutes.get(
+  '/medicos/especialidad/:idEspecialidad',
+  medicosController().obtenerEspecialidadPorId,
+);
 
+medicosRoutes.get(
+  '/medicos/fechas/:fecha',
+  medicosController().obtenerFechas,
+  );
 export default medicosRoutes;

@@ -13,7 +13,6 @@ const port = process.env.PORT_GATEWAY || 5000;
 
 app.use(routerIndex);
 app.use(morgan('combined'));
-
 app.listen(port, () => {
   console.log('server on port ' + port);
 });

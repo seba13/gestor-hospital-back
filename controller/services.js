@@ -14,6 +14,18 @@ const services = () => {
           console.log(e);
         });
     },
+    getCitas: (req, res) => {
+      fetch('http://localhost:82/citas')
+        .then(result => result.json())
+        .then(json => {
+          console.log(json);
+
+          res.send(json);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
   };
 };
 
