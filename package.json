@@ -8,7 +8,8 @@
     "dev": "nodemon app.js",
     "m1": "nodemon node services/empleados/app.js",
     "m2": "nodemon node services/citas/app.js",
-    "npm-run-all": "npm-run-all --parallel  dev m1 m2",
+    "m3": "nodemon node services/usuarios/app.js",
+    "npm-run-all": "npm-run-all --parallel  dev m1 m2 m3",
     "format": "prettier --write .",
     "lint": "eslint --fix . --ext .js"
   },
@@ -16,13 +17,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "*",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "form-data": "^4.0.0",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.5",
     "node-fetch": "^3.3.2",
-    "uuid":"*",
-    "bcrypt": "*"
+    "sharp": "^0.32.4",
+    "uuid": "*"
   },
   "devDependencies": {
     "eslint": "^8.54.0",

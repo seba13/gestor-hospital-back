@@ -6,6 +6,6 @@ const citasRoutes = Router();
 citasRoutes.get('/citas', citasController().getCitas);
 
 
-citasRoutes.get('/medicos/:idMedico/dias_citas', citasController().getDiasTrabajoMedico);
+citasRoutes.get('/medicos/:idMedico/dias-citas', citasController().getDiasTrabajoMedico);
 
 export default citasRoutes;

@@ -18,6 +18,7 @@ export const getMedicosEspecialidad = async idEspecialidad => {
     ` select * 
       from medico
       join empleado on medico.id_empleado = empleado.id_empleado
+      join persona on persona.id_persona = empleado.id_persona
       where medico.id_especialidad = ?`,
     [idEspecialidad],
   );
@@ -27,7 +28,6 @@ export const getMedicosEspecialidad = async idEspecialidad => {
 
   return rows;
 };
-
 
 // testing
 export const getFechas = async fecha => {

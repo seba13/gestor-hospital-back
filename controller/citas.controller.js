@@ -36,7 +36,7 @@ const citasController = () => {
       const { idMedico } = req.params;
 
       
-      fetch(`${dominio}:${port}/medicos/${idMedico}/dias_citas`)
+      fetch(`${dominio}:${port}/medicos/${idMedico}/dias-citas`)
         .then(result => result.json())
         .then(json => {
           if (json.error) {

@@ -13,6 +13,7 @@ export default {
   appPort: process.env.APP_PORT || 5000 || 5500,
   portEmpleados: process.env.PORT_SERVICIO_EMPLEADOS || 5001 || 5501,
   portCitas: process.env.PORT_SERVICIO_CITAS || 5002 || 5502,
+  portUsuarios: process.env.PORT_SERVICIO_USUARIOS || 5003 || 5503,
   dbHost: process.env.PROD === 'false' ? process.env.DB_HOST : '',
   dbPort: process.env.PROD === 'false' ? process.env.DB_PORT : '',
   dbName: process.env.DB_NAME,

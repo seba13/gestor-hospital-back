@@ -1,13 +1,16 @@
 import multer from 'multer';
-export class ErrorHandler extends Error {
-  setStatus(status) {
-    this.status = status;
+
+export const errorMessage = (err, req, res, next) => {
+  if (err.message) {
+    next(err);
+  } else {
+    next(new Error('error al procesar solicitud'));
   }
-}
+};
 
 export const multerErrorHandler = (err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
 
+  if (err instanceof multer.MulterError) {
     let message = '';
     if (err.code === 'LIMIT_FILE_SIZE') {
       message = 'Archivo excede el tamaño permitido';
@@ -20,7 +23,10 @@ export const multerErrorHandler = (err, req, res, next) => {
     }
 
     res.status(400).json({
-      error: message,
+      error: {
+        status: 400,
+        message,
+      },
     });
   } else {
     next(err);
@@ -30,7 +36,10 @@ export const multerErrorHandler = (err, req, res, next) => {
 export const errorHandler = (err, req, res, next) => {
   if (err) {
     res.status(err.status || 500).json({
-      error: err.message,
+      error: {
+        status: err.status,
+        message: err.message,
+      },
     });
   }
 };
