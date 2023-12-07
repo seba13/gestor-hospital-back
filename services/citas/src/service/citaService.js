@@ -1,9 +1,13 @@
-import { setCitaMedica, getCitas } from '../models/citaModel.js';
-
+// import { setCitaMedica, getCitas } from '../models/citaModel.js';
+import { getCitas, getDiasTrabajoMedico } from '../models/citaModel.js';
 
 export default () => {
   return {
     getCitas: async () => await getCitas(),
-    setCita: async (params) => await setCitaMedica(params),
+
+    getDiasTrabajoMedico: async idMedico => {
+      return await getDiasTrabajoMedico(idMedico);
+    },
+    // setCita: async (params) => await setCitaMedica(params),
   };
 };

@@ -3,12 +3,31 @@ import { pool } from '../../../../config/db.js';
 const promise = pool.promise();
 
 export const getEspecialidadesMedicas = async () => {
+  const [rows] = await promise.query('select especialidad as data, id_especialidad as id from especialidad');
+  return rows;
+};
+
+// works
+export const getEspecialidadesPorId = async id => {
+  const [rows] = await promise.query(`select id_especialidad as id, especialidad as data from especialidad where id_especialidad='${id}'`);
+  return rows;
+};
+
+export const getMedicosEspecialidad = async idEspecialidad => {
   const [rows] = await promise.query(
-    'select especialidad as data, id_doctor as id from doctor',
+    ` select * 
+      from medico
+      join empleado on medico.id_empleado = empleado.id_empleado
+      where medico.id_especialidad = ?`,
+    [idEspecialidad],
   );
+  console.log(idEspecialidad);
+
+  console.log(rows);
 
   return rows;
 };
+
 
 // testing
 export const getFechas = async fecha => {
@@ -20,25 +39,23 @@ export const getFechas = async fecha => {
   );
 
   // Obtener solo los valores que deseas agrupar en un nuevo array
-  let citas = rows.map(cita => {
+  const citas = rows.map(cita => {
     return {
       id_cita: cita.id_cita_medica,
       hora_inicio_cita: cita.hora_cita,
       hora_fin_cita: cita.hora_fin_cita,
     };
   });
-  let horas = rows.map(cita => 
-    
-     ({ hora_inicio: cita.hora_cita,
-      hora_fin: cita.hora_fin_cita})
-    
-  );
-  let resultSet = {
+  const horas = rows.map(cita => ({
+    hora_inicio: cita.hora_cita,
+    hora_fin: cita.hora_fin_cita,
+  }));
+  const resultSet = {
     horas_doctor: horas,
     dia_cita: rows[0].fecha_cita,
     duracion_descanso: rows[0].duracion_descanso,
     duracion_cita: rows[0].duracion_cita,
-    citas
-  }
+    citas,
+  };
   return resultSet;
 };
