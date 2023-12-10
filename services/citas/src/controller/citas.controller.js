@@ -5,9 +5,12 @@ export default () => {
     obtenerCitas: async (req, res) => {
       res.json(await citaService().getCitas());
     },
-    agendarCita: async (req, res) => {
-      const { body } = req;
-      res.json(await citaService().setCita(body));
+    agendarCita: async (req, res, next) => {
+      try {
+        return res.status(200).json(await citaService().setCitaMedica(req.body));
+      } catch (e) {
+        next(e);
+      }
     },
 
     obtenerDiasTrabajo: async (req, res, next) => {

@@ -8,7 +8,29 @@ const citasController = () => {
 
   return {
     getCitas: (req, res, next) => {
-      fetch('http://localhost:82/citas')
+      fetch(`${dominio}:${port}/citas`)
+        .then(result => result.json())
+        .then(json => {
+          if (json.error) {
+            const newError = new ErrorHandler(json.error.message);
+            newError.setStatus(json.error.status);
+            throw newError;
+          }
+
+          res.send(json);
+        })
+        .catch(e => {
+          next(e);
+        });
+    },
+    setCita: (req, res, next) => {
+      fetch(`${dominio}:${port}/citas/agendar`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Indica que se envía un cuerpo JSON
+        },
+        body: JSON.stringify(req.body), // Coloca el cuerpo fuera de los encabezados
+      })
         .then(result => result.json())
         .then(json => {
           if (json.error) {
@@ -35,7 +57,6 @@ const citasController = () => {
     getDiasTrabajoMedico: (req, res, next) => {
       const { idMedico } = req.params;
 
-      
       fetch(`${dominio}:${port}/medicos/${idMedico}/dias-citas`)
         .then(result => result.json())
         .then(json => {
