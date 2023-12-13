@@ -1,10 +1,10 @@
 // import { setCitaMedica, getCitas } from '../models/citaModel.js';
 import ErrorHandler from '../../../usuarios/src/errorHandler/errorHandler.js';
-import { getCitas, getDiasTrabajoMedico, getCitasMedicoDia, getHorarioLaboralMedico } from '../models/citaModel.js';
+import { getCitas, getDiasTrabajoMedico, getCitasMedicoDia, getHorarioLaboralMedico, setCitaMedica } from '../models/citaModel.js';
 
 export default () => {
   return {
-    getCitas: async () => (await getCitas()),
+    getCitas: async () => await getCitas(),
 
     getDiasTrabajoMedico: async idMedico => {
       return await getDiasTrabajoMedico(idMedico);
