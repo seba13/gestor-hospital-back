@@ -8,6 +8,10 @@ app.use(express.json());
 
 app.use(indexRoutes);
 
+// app.use(express.urlencoded({ extended: true }));
+
+
+
 app.use(errorHandler);
 
 app.listen(config.portCitas, () => {

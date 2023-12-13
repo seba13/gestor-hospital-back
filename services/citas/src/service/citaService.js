@@ -4,10 +4,14 @@ import { getCitas, getDiasTrabajoMedico, getCitasMedicoDia, getHorarioLaboralMed
 
 export default () => {
   return {
-    getCitas: async () => await getCitas(),
+    getCitas: async () => (await getCitas()),
 
     getDiasTrabajoMedico: async idMedico => {
       return await getDiasTrabajoMedico(idMedico);
+    },
+    setCitaMedica: async parametros => {
+      // console.log("datos servicio: "+parametros.rut);
+      return await setCitaMedica(parametros);
     },
     // setCita: async (params) => await setCitaMedica(params),
 
