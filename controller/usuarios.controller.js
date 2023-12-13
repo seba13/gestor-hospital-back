@@ -24,7 +24,7 @@ export default () => {
       },
     }).single('imagenPerfil'),
 
-    actualizarImagen: (req, res, next) => {
+    actualizarImagenUsuario: (req, res, next) => {
       const { idUsuario } = req.params;
 
       sharp(req.file.buffer)
@@ -40,7 +40,7 @@ export default () => {
             method: 'PATCH',
             body: formData,
           })
-            .then(result => result.json())
+            .then(response => response.json())
             .then(json => {
               if (json.error) {
                 const newError = new ErrorHandler(json.error.message || 'error al enviar imagen');
@@ -55,6 +55,54 @@ export default () => {
               next(e);
             });
         });
+    },
+
+    obtenerImagenUsuario: (req, res, next) => {
+      try {
+        const { idUsuario, medidas } = req.params;
+
+        console.log({ medidas });
+
+        const ancho = parseInt(medidas.toLowerCase().split('x')[0]);
+        const alto = parseInt(medidas.toLowerCase().split('x')[1]);
+
+        if (isNaN(ancho) || isNaN(alto)) {
+          const newError = new ErrorHandler('Parametro medida invalida');
+          newError.setStatus(400);
+
+          throw newError;
+        }
+
+        fetch(`${dominio}:${port}/usuario/perfil/${idUsuario}/${ancho}x${alto}`)
+          .then(response => {
+            if (!response.ok) {
+              return response.json().then(json => {
+                const newError = new ErrorHandler(json.error.message || 'Error al solicitar imagen');
+                newError.setStatus(json.error.status || 500);
+                throw newError;
+              });
+            }
+
+            return response.arrayBuffer();
+          })
+          .then(arrayBuffer => {
+            const buffer = Buffer.from(arrayBuffer);
+
+            res.type('image/jpeg').send(buffer);
+            // res.type('image/jpeg').send(arrayBuffer);
+          })
+          .catch(err => {
+            console.log('entra en catch');
+            next(err);
+          });
+
+        // .then(blob => {
+        //   res.setHeader('Content-Type', 'image/jpeg');
+        //   res.send(blob);
+        // });
+      } catch (e) {
+        next(e);
+      }
     },
   };
 };

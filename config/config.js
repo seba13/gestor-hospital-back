@@ -9,7 +9,7 @@ config({
 });
 
 export default {
-  dominio: process.env.PROD === 'false' ? 'http://localhost' : '',
+  dominio: process.env.PROD === 'false' ? 'http://192.168.0.18' : '',
   appPort: process.env.APP_PORT || 5000 || 5500,
   portEmpleados: process.env.PORT_SERVICIO_EMPLEADOS || 5001 || 5501,
   portCitas: process.env.PORT_SERVICIO_CITAS || 5002 || 5502,

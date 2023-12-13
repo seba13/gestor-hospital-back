@@ -1,9 +1,6 @@
-import {
-  getEspecialidadesMedicas,
-  getEspecialidadesPorId,
-  getFechas,
-  getMedicosEspecialidad,
-} from '../models/empleadoModel.js';
+import config from '../../../../config/config.js';
+
+import { getEspecialidadesMedicas, getEspecialidadesPorId, getFechas, getMedicosEspecialidad } from '../models/empleadoModel.js';
 
 export default () => {
   return {
@@ -17,7 +14,26 @@ export default () => {
       return await getFechas(fecha);
     },
     getMedicosEspecialidad: async idEspecialidad => {
-      return await getMedicosEspecialidad(idEspecialidad);
+      const medicosEspecialidad = await getMedicosEspecialidad(idEspecialidad);
+
+      medicosEspecialidad.reduce((prev, curr) => {
+        // console.log(prev);
+        // console.log(curr);
+
+        for (const key in curr) {
+          console.log(key);
+        }
+
+        curr.imagenUrl = `${config.dominio}:${config.appPort}/usuario/perfil/${curr.idUsuario}/300x300`;
+
+        prev.push(curr);
+
+        return prev;
+      }, []);
+
+      console.log(medicosEspecialidad);
+
+      return medicosEspecialidad;
     },
   };
 };

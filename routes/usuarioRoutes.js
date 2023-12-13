@@ -6,6 +6,13 @@ const usuarioRoutes = Router();
 
 // usuarioRoutes.get('/perfil/:idUsuario/:medida');
 
-usuarioRoutes.patch('/usuario/perfil/:idUsuario/actualizar-imagen', usuariosController().multerUploadImage, usuariosController().actualizarImagen, multerErrorHandler);
+usuarioRoutes.patch(
+  '/usuario/perfil/:idUsuario/actualizar-imagen',
+  usuariosController().multerUploadImage,
+  usuariosController().actualizarImagenUsuario,
+  multerErrorHandler,
+);
+
+usuarioRoutes.get('/usuario/perfil/:idUsuario/:medidas', usuariosController().multerUploadImage, usuariosController().obtenerImagenUsuario);
 
 export default usuarioRoutes;

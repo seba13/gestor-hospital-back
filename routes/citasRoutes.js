@@ -8,4 +8,7 @@ citasRoutes.get('/citas', citasController().getCitas);
 
 citasRoutes.get('/medicos/:idMedico/dias-citas', citasController().getDiasTrabajoMedico);
 
+
+citasRoutes.post('/medicos/horario', citasController().obtenerHorarioCitasDiaMedico)
+
 export default citasRoutes;

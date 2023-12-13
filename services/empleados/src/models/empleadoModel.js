@@ -3,7 +3,15 @@ import { pool } from '../../../../config/db.js';
 const promise = pool.promise();
 
 export const getEspecialidadesMedicas = async () => {
-  const [rows] = await promise.query('select especialidad as data, id_especialidad as id from especialidad');
+  const [rows] = await promise.query(`
+  select especialidad.especialidad as data, especialidad.id_especialidad as id from medico
+  join empleado on empleado.id_empleado = medico.id_empleado
+  join persona on empleado.id_persona = persona.id_persona
+  join usuario on usuario.id_persona = persona.id_persona
+  join especialidad on medico.id_especialidad = especialidad.id_especialidad;`);
+
+  console.log(rows);
+
   return rows;
 };
 
@@ -15,14 +23,16 @@ export const getEspecialidadesPorId = async id => {
 
 export const getMedicosEspecialidad = async idEspecialidad => {
   const [rows] = await promise.query(
-    ` select * 
-      from medico
-      join empleado on medico.id_empleado = empleado.id_empleado
-      join persona on persona.id_persona = empleado.id_persona
-      where medico.id_especialidad = ?`,
+    ` select persona.nombre, persona.paterno, persona.materno,
+    especialidad, medico.cod_medico as idMedico, usuario.id_usuario as idUsuario
+    from especialidad
+    join medico on medico.id_especialidad = especialidad.id_especialidad
+    join empleado on medico.id_empleado = empleado.id_empleado
+    join persona on empleado.id_persona = persona.id_persona
+    join usuario on usuario.id_persona = persona.id_persona
+    where especialidad.id_especialidad = ?`,
     [idEspecialidad],
   );
-  console.log(idEspecialidad);
 
   console.log(rows);
 
