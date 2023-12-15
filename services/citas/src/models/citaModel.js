@@ -9,7 +9,7 @@ export const getCitas = async () => {
 };
 export const setCitaMedica = async parametros => {
   try {
-    const { rut, dv, idMedico, hora, fecha, email, duracionCita } = parametros;
+    const { rut, dv, idMedico, hora, fecha, email, duracionCita, nombre, paterno, materno, telefono } = parametros;
     // console.log('PARAMETROS:');
     // console.log(parametros);
     // Función para ejecutar múltiples consultas
@@ -24,7 +24,7 @@ export const setCitaMedica = async parametros => {
       const nuevaClave = rut.substring(0, 4);
       try {
         try {
-          await promise.query(`INSERT INTO persona (id_persona, rut, dv, email) VALUES (?, ?, ?, ?)`, [idPersona, rut, dv, email]); // works
+          await promise.query(`INSERT INTO persona (id_persona, rut, dv, email, nombre, paterno, materno) VALUES (?, ?, ?, ?,?,?,?)`, [idPersona, rut, dv, email, nombre, paterno, materno]); // works
           await promise.query(`INSERT INTO usuario (id_usuario, usuario, contrasena, id_persona, id_rol) VALUES (?, ?, ?, ?, ?)`, [
           uuidv4(),
           email,
@@ -33,6 +33,7 @@ export const setCitaMedica = async parametros => {
           5
         ]); // works
           await promise.query(`INSERT INTO detalle_persona (id_persona) VALUES (?)`, [idPersona]); // works
+          await promise.query(`INSERT INTO telefono_persona (id_detalle_persona, telefono) VALUES ((select id_detalle_persona from detalle_persona where detalle_persona.id_persona=?), ?)`, [idPersona, telefono]); // works
         } catch (error) {
           console.error("ERROR AL CREAR PERSONA.");
           console.error(error)

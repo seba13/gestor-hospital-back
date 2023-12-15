@@ -9,8 +9,7 @@ export default () => {
     getDiasTrabajoMedico: async idMedico => {
       return await getDiasTrabajoMedico(idMedico);
     },
-    setCitaMedica: async parametros => {
-      // console.log("datos servicio: "+parametros.rut);
+    setCitaMedica: async parametros => {// console.log("datos servicio: "+parametros.rut);
       return await setCitaMedica(parametros);
     },
     // setCita: async (params) => await setCitaMedica(params),
