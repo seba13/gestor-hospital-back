@@ -9,7 +9,7 @@ export const getCitas = async () => {
 };
 export const setCitaMedica = async parametros => {
   try {
-    const { rut,dv, idMedico, hora, fecha, email } = parametros;
+    const { rut, dv, idMedico, hora, fecha, email, duracionCita } = parametros;
     // console.log('PARAMETROS:');
     // console.log(parametros);
     // Función para ejecutar múltiples consultas
@@ -21,40 +21,75 @@ export const setCitaMedica = async parametros => {
       const idPaciente = uuidv4();
       const idCita = uuidv4();
       const idFichaMedica = uuidv4();
+      const nuevaClave = rut.substring(0, 4);
       try {
-        await promise.query(`INSERT INTO persona (id_persona, rut, dv, email) VALUES (?, ?, ?, ?)`, [idPersona, rut, dv, email]); // works
-        await promise.query('INSERT INTO detalle_persona (id_persona) VALUES (?)', [idPersona]); // works
-        await promise.query(`INSERT INTO ficha_medica (id_ficha_medica) VALUES (?)`, [idFichaMedica]); // works
-        await promise.query(`INSERT INTO paciente (id_paciente, id_persona, id_ficha_medica) VALUES (?,?,?)`, [idPaciente, idPersona, idFichaMedica]); // works
-        await promise.query(
-          'INSERT INTO cita_medica (id_cita_medica, id_estado_cita, cod_medico, id_persona, fecha_cita, hora_cita) VALUES (?, ?,?,?,?,?)',
-          [idCita, 4, idMedico, idPaciente, fecha, hora],
-        ); // works
-        return { response: 'Cita agendada. Usuario nuevo registrado.' };
+        try {
+          await promise.query(`INSERT INTO persona (id_persona, rut, dv, email) VALUES (?, ?, ?, ?)`, [idPersona, rut, dv, email]); // works
+          await promise.query(`INSERT INTO usuario (id_usuario, usuario, contrasena, id_persona, id_rol) VALUES (?, ?, ?, ?, ?)`, [
+          uuidv4(),
+          email,
+          nuevaClave,
+          idPersona,
+          5
+        ]); // works
+          await promise.query(`INSERT INTO detalle_persona (id_persona) VALUES (?)`, [idPersona]); // works
+        } catch (error) {
+          console.error("ERROR AL CREAR PERSONA.");
+          console.error(error)
+        }
+        
+        try {
+          await promise.query(`INSERT INTO ficha_medica (id_ficha_medica) VALUES (?)`, [idFichaMedica]); // works
+          await promise.query(`INSERT INTO paciente (id_paciente, id_persona, id_ficha_medica) VALUES (?,?,?)`, [idPaciente, idPersona, idFichaMedica]);
+        } catch (error) {
+          console.error("ERROR AL CREAR PACIENTE.");
+          console.error(error)
+        }
+        try {
+          const idHorarioAtencion = await promise.query('select dc.id_duracion_cita as id from duracion_citas dc where dc.duracion_cita = ?', [parseInt(duracionCita)]);
+          const {id} = idHorarioAtencion[0][0];
+          await promise.query('INSERT INTO cita_medica VALUES (?, ?,?,?,?,?,?)',[idCita, 4, idMedico, idPaciente, fecha, hora, id]);
+          await promise.query('INSERT INTO horario_cita VALUES (?, (select id_horario from horario_atencion_cita h join dia_horario on dia_horario.id_dia=h.id_dia where h.id_empleado=(SELECT id_empleado FROM medico where cod_medico=?) and dia_horario.dia=(select dayname(?))) );',[idCita, idMedico, fecha]); // test
+        } catch (error) {
+          console.error("ERROR AL CREAR CITA MEDICA.");
+          console.error(error)
+        }
+        
+          
+        return { response: 'OK', message: 'Cita agendada. Usuario nuevo registrado.' };
       } catch (error) {
-        console.error("Error, no se agendo la cita, correo existe ya en el sistema.");
-        return { response: 'Error al generar cita.' };
+          console.error("ERROR AL CREAR CITA MEDICA.");
+          console.error(error);
+        return { response: 'ERROR', message: 'Error al generar cita.' };
       }
     } else {
       // si existe rut
       try {
-        const query2 = await promise.query(`select paciente.id_paciente as 'id', persona.rut as rut_paciente from persona
-        join paciente on paciente.id_persona=persona.id_persona where rut=?`, [parseInt(rut)]);
+        const query2 = await promise.query(
+          `select paciente.id_paciente as 'id', persona.rut as rut_paciente from persona
+        join paciente on paciente.id_persona=persona.id_persona where rut=?`,
+          [parseInt(rut)],
+        );
         const { id } = query2[0][0];
         const idCita = uuidv4();
+        const resultQuery = await promise.query(`select dc.id_duracion_cita as id from duracion_citas dc where dc.duracion_cita = ?`, [parseInt(duracionCita)]);
+        await promise.query('INSERT INTO cita_medica (id_cita_medica, id_estado_cita, cod_medico, id_paciente, fecha_cita, hora_cita, id_duracion_cita) VALUES (?, ?,?,?,?,?,?)',[idCita, 4, idMedico, id, fecha, hora, parseInt(resultQuery[0][0].id)]); // works
         await promise.query(
-          'INSERT INTO cita_medica (id_cita_medica, id_estado_cita, cod_medico, id_persona, fecha_cita, hora_cita) VALUES (?, ?,?,?,?,?)',
-          [idCita, 4, idMedico, id, fecha, hora],
-        ); // works
-        return { id: idCita, response: 'Cita agendada.' };
+            `INSERT INTO horario_cita VALUES (?, 
+            (select id_horario from horario_atencion_cita h
+            join dia_horario on dia_horario.id_dia=h.id_dia
+          where h.id_empleado=(SELECT id_empleado FROM medico where cod_medico=?)
+          and dia_horario.dia=(select dayname(?)))
+          )`,[idCita, idMedico, fecha]); // test
+        return { response: 'OK', message: 'Cita agendada.' };
       } catch (error) {
-        console.error("Error, no se agendo la cita con usuario existente.");
-        return { response: 'Error al generar cita.' };
+        console.error('Error, no se agendo la cita con usuario existente.');
+        return { response: 'ERROR', message: 'Error al generar cita.' };
       }
     }
   } catch (error) {
     console.error('Error al ejecutar la consulta:', error);
-    return { error: 'Ocurrió un error al agendar una cita.' };
+    return { response: 'ERROR', message: 'Ocurrió un error al agendar una cita.' };
   }
 };
 
