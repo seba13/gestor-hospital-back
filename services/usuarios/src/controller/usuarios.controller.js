@@ -1,6 +1,6 @@
 import multer from 'multer';
 import sharp from 'sharp';
-import usuarioService from '../services/usuarioService.js';
+import { actualizarImagenUsuario, obtenerImagenUsuario, registrarPersona, obteneridPacienteRut } from '../services/usuarioService.js';
 import ErrorHandler from '../errorHandler/errorHandler.js';
 // import { File } from 'node-fetch';
 
@@ -32,15 +32,13 @@ export default () => {
         const idUsuario = JSON.parse(req.body.idUsuario);
         const mimetype = req.file.mimetype;
 
-        usuarioService()
-          .actualizarImagenUsuario(idUsuario, imagen, mimetype)
-          .then(resulset => {
-            if (resulset && resulset.affectedRows > 0) {
-              res.status(200).json({ mensaje: 'IMAGEN ACTUALIZADA CON ÉXITO' });
-            } else {
-              res.status(200).json({ mensaje: 'NIGUNA FILA FUÉ AFECTADA' });
-            }
-          });
+        actualizarImagenUsuario(idUsuario, imagen, mimetype).then(resulset => {
+          if (resulset && resulset.affectedRows > 0) {
+            res.status(200).json({ mensaje: 'IMAGEN ACTUALIZADA CON ÉXITO' });
+          } else {
+            res.status(200).json({ mensaje: 'NIGUNA FILA FUÉ AFECTADA' });
+          }
+        });
       } catch (e) {
         next(e);
       }
@@ -56,8 +54,8 @@ export default () => {
         console.log(idUsuario, medidas);
 
         // servicio get imagen
-        usuarioService()
-          .obtenerImagenUsuario(idUsuario)
+
+        obtenerImagenUsuario(idUsuario)
           .then(result => {
             if (result) {
               if (!(result.imagen_perfil instanceof Buffer)) {
@@ -97,6 +95,71 @@ export default () => {
           });
       } catch (e) {
         next(e);
+      }
+    },
+
+    registrarNuevoUsuario: async (req, res, next) => {
+      const { rut, dv, email, nombre, paterno, materno, idRol = 4, telefono } = req.body;
+      try {
+        const registroPersona = await registrarPersona({ rut, dv, email, nombre, paterno, materno, idRol, telefono });
+
+        if (registroPersona.response) {
+          return res.json({
+            response: true,
+            message: registrarPersona.message,
+          });
+        }
+      } catch (e) {
+        console.log({
+          generalMessage: e.message,
+          internalMessage: e.internalMessage,
+          details: e.details,
+        });
+
+        return res.status(e.status || 500).json({
+          response: false,
+          message: e.message,
+          details: e.details,
+        });
+      }
+    },
+
+    personaRegistrada: (req, res, next) => {
+      return res.json({
+        response: true,
+        message: 'persona registrada',
+      });
+    },
+
+    validarPersona: async (req, res, next) => {
+      return res.status(400).json({
+        response: true,
+        message: 'email coincide ',
+      });
+    },
+
+    obtenerIdPacienteRut: async (req, res, next) => {
+      const { rut } = req.body;
+
+      console.log('controlador obtener idpaciente rut');
+
+      console.log({ rut });
+
+      try {
+        const response = await obteneridPacienteRut({ rut });
+
+        console.log({ response });
+
+        if (response.idPaciente) {
+          return res.json({
+            response: true,
+            idPaciente: response.idPaciente,
+          });
+        }
+      } catch (e) {
+        return res.status(e.status || 500).json({
+          response: false,
+        });
       }
     },
   };

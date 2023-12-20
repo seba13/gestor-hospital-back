@@ -4,6 +4,14 @@ class ErrorHandler extends Error {
   setStatus(status) {
     this.status = status;
   }
+
+  setDetailsError(message) {
+    this.details = message;
+  }
+
+  setInternalMessage(message) {
+    this.internalMessage = message;
+  }
 }
 export default ErrorHandler;
 

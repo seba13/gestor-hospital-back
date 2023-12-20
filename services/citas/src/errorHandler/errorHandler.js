@@ -1,3 +1,18 @@
+class ErrorHandler extends Error {
+  setStatus(status) {
+    this.status = status;
+  }
+
+  setDetailsError(message) {
+    this.details = message;
+  }
+
+  setInternalMessage(message) {
+    this.internalMessage = message;
+  }
+}
+export default ErrorHandler;
+
 export const errorMessage = (err, req, res, next) => {
   if (err.message) {
     next(err);

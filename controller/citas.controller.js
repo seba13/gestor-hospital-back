@@ -24,6 +24,10 @@ const citasController = () => {
         });
     },
     setCita: (req, res, next) => {
+      console.log('entra en controlador agendar cita');
+
+      console.log({ ...req.body });
+
       fetch(`${dominio}:${port}/citas/agendar`, {
         method: 'POST',
         headers: {

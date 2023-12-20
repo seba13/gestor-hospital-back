@@ -4,12 +4,12 @@ import indexRoutes from './src/routes/indexRoutes.js';
 import { errorMessage, errorHandler } from './src/errorHandler/errorHandler.js';
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(indexRoutes);
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 
 
