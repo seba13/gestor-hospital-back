@@ -1,5 +1,5 @@
 // import { setCitaMedica, getCitas } from '../models/citaModel.js';
-import ErrorHandler from '../../../usuarios/src/errorHandler/errorHandler.js';
+import ErrorHandler from '../errorHandler/errorHandler.js';
 import { fetchObtenerIdPacienteRut } from '../utils/fetchValidateUser.js';
 import { stringHoraToDate } from '../utils/stringDate.js';
 
@@ -93,7 +93,6 @@ export const obtenerIdHorarioAtencionCita = async ({ idEmpleado, diaSemana }) =>
 };
 
 export const obtenerHorarioCitasDiaMedico = async ({ idMedico, fechaCitas, idDia }) => {
-  
   const horarioLaboralDiaMedico = await getHorarioLaboralMedicoModel(idMedico, idDia);
 
   const citasMedicoDia = await getCitasMedicoDiaModel(idMedico, fechaCitas);
