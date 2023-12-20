@@ -10,6 +10,9 @@ config({
 
 export default {
   dominio: process.env.PROD === 'false' ? 'http://192.168.0.19' : '',
+  urlEmpleados: process.env.URL_EMPLEADOS || 'http://localhost:81',
+  urlCitas: process.env.URL_CITAS || 'http://localhost:82',
+  urlUsuarios: process.env.URL_USUARIOS || 'http://localhost:83',
   appPort: process.env.APP_PORT || 5000 || 5500,
   portEmpleados: process.env.PORT_SERVICIO_EMPLEADOS || 5001 || 5501,
   portCitas: process.env.PORT_SERVICIO_CITAS || 5002 || 5502,

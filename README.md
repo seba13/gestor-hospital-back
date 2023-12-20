@@ -32,3 +32,24 @@ DB_USER = admin_clinica
 DB_PASSWORD = 1234
 
 PROD = false
+
+
+
+<!-- web app -->
+https://clinica-front.onrender.com
+
+# servicios
+
+## empleados
+
+https://clinica-backend-servicio-empleados.onrender.com
+
+## citas
+
+https://clinica-backend-servicio-citas.onrender.com
+
+## usuarios
+
+https://clinica-backend-servicio-usuarios.onrender.com
+
+
