@@ -4,11 +4,13 @@ const promise = pool.promise();
 
 export const getEspecialidadesMedicas = async () => {
   const [rows] = await promise.query(`
-  select especialidad.especialidad as data, especialidad.id_especialidad as id from medico
-  join empleado on empleado.id_empleado = medico.id_empleado
-  join persona on empleado.id_persona = persona.id_persona
-  join usuario on usuario.id_persona = persona.id_persona
-  join especialidad on medico.id_especialidad = especialidad.id_especialidad;`);
+  SELECT DISTINCT especialidad.especialidad AS data, especialidad.id_especialidad AS id
+  FROM medico
+  JOIN empleado ON empleado.id_empleado = medico.id_empleado
+  JOIN persona ON empleado.id_persona = persona.id_persona
+  JOIN usuario ON usuario.id_persona = persona.id_persona
+  JOIN especialidad ON medico.id_especialidad = especialidad.id_especialidad
+`);
 
   console.log(rows);
 
