@@ -3,7 +3,7 @@ import config from '../config/config.js';
 // import FormData from 'form-data';
 import multer from 'multer';
 import sharp from 'sharp';
-import { ErrorHandler } from '../errorHandler/errorHandler.js';
+import ErrorHandler  from '../errorHandler/errorHandler.js';
 
 export default () => {
   

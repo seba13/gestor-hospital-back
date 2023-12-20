@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import config from '../config/config.js';
-import { ErrorHandler } from '../errorHandler/errorHandler.js';
+import ErrorHandler  from '../errorHandler/errorHandler.js';
 
 const citasController = () => {
   

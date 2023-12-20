@@ -3,11 +3,19 @@ export class ErrorHandler extends Error {
   setStatus(status) {
     this.status = status;
   }
+
+  setDetailsError(message) {
+    this.details = message;
+  }
+
+  setInternalMessage(message) {
+    this.internalMessage = message;
+  }
 }
+export default ErrorHandler;
 
 export const multerErrorHandler = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
-
     let message = '';
     if (err.code === 'LIMIT_FILE_SIZE') {
       message = 'Archivo excede el tamaño permitido';

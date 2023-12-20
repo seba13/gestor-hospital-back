@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import medicosRoutes from './medicosRoutes.js';
-import { ErrorHandler } from '../errorHandler/errorHandler.js';
+import ErrorHandler from '../errorHandler/errorHandler.js';
 
 const indexRoutes = Router();
 

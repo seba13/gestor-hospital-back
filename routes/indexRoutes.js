@@ -3,9 +3,7 @@ import { Router } from 'express';
 import medicosRoutes from './medicosRoutes.js';
 import citasRoutes from './citasRoutes.js';
 import usuarioRoutes from './usuarioRoutes.js';
-import { ErrorHandler } from '../errorHandler/errorHandler.js';
-
-
+import ErrorHandler from '../errorHandler/errorHandler.js';
 
 const routerIndex = Router();
 
