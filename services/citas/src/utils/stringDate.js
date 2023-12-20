@@ -1,4 +1,4 @@
-import ErrorHandler from '../../../usuarios/src/errorHandler/errorHandler.js';
+import ErrorHandler from '../errorHandler/errorHandler.js';
 
 export const stringHoraToDate = stringHora => {
   const fecha = new Date();
