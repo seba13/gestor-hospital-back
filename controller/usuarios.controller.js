@@ -3,11 +3,10 @@ import config from '../config/config.js';
 // import FormData from 'form-data';
 import multer from 'multer';
 import sharp from 'sharp';
-import ErrorHandler  from '../errorHandler/errorHandler.js';
+import ErrorHandler from '../errorHandler/errorHandler.js';
 
 export default () => {
-  
-  const {urlUsuarios} = config
+  const { urlUsuarios } = config;
 
   return {
     multerUploadImage: multer({
@@ -28,34 +27,61 @@ export default () => {
     actualizarImagenUsuario: (req, res, next) => {
       const { idUsuario } = req.params;
 
-      sharp(req.file.buffer)
-        .toBuffer()
-        .then(data => {
-          const formData = new FormData();
-          // formDataImg.append('imagenPerfil', req.file.buffer);
+      const config = {
+        jpeg: { quality: 20, effort: 2 },
+        webp: { quality: 20, effort: 2 },
+        png: { quality: 20, effort: 2, compressionLevel: 2 },
+      };
 
-          formData.append('imagenPerfil', new File([req.file.buffer], req.file.originalname, { type: req.file.mimetype }));
-          formData.append('idUsuario', JSON.stringify(idUsuario));
+      const ext = req.file.mimetype.split('/')[1];
 
-          fetch(`${urlUsuarios}/usuario/perfil/${idUsuario}/actualizar-imagen`, {
-            method: 'PATCH',
-            body: formData,
-          })
-            .then(response => response.json())
-            .then(json => {
-              if (json.error) {
-                const newError = new ErrorHandler(json.error.message || 'error al enviar imagen');
-                newError.setStatus(json.error.status || 500);
+      if (!config[ext]) {
+        const newError = new ErrorHandler('extension inválida');
+        newError.setStatus(500);
+        throw newError;
+      } else {
+        console.log('continuar');
+      }
 
-                throw newError;
-              }
+      try {
+        // const buffer = Buffer.from(req.file.buffer);
 
-              res.status(200).json(json);
+        sharp(req.file.buffer)
+          .resize({ width: 400, height: 400, fit: 'cover', position: 'top' })
+          [ext]([config][ext])
+          .toBuffer()
+          .then(data => {
+            const formData = new FormData();
+            // formDataImg.append('imagenPerfil', req.file.buffer);
+
+            formData.append('imagenPerfil', new File([data], req.file.originalname, { type: req.file.mimetype }));
+            formData.append('idUsuario', JSON.stringify(idUsuario));
+
+            fetch(`${urlUsuarios}/usuario/perfil/${idUsuario}/actualizar-imagen`, {
+              method: 'PATCH',
+              body: formData,
             })
-            .catch(e => {
-              next(e);
-            });
-        });
+              .then(response => response.json())
+              .then(json => {
+                if (json.error) {
+                  const newError = new ErrorHandler(json.error.message || 'error al enviar imagen');
+                  newError.setStatus(json.error.status || 500);
+
+                  throw newError;
+                }
+
+                res.status(200).json(json);
+              })
+              .catch(e => {
+                next(e);
+              });
+          });
+      } catch (e) {
+        const newError = new ErrorHandler('error al enviar imagen');
+        newError.setStatus(500);
+
+        next(newError);
+      }
     },
 
     obtenerImagenUsuario: (req, res, next) => {
