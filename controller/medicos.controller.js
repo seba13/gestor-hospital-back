@@ -3,12 +3,11 @@ import config from '../config/config.js';
 import { ErrorHandler } from '../errorHandler/errorHandler.js';
 
 const medicosController = () => {
-  const dominio = config.dominio;
-  const port = config.portEmpleados;
+  const { urlEmpleados } = config;
 
   return {
     getEspecialidades: (req, res, next) => {
-      fetch(`${dominio}:${port}/medicos/especialidades`)
+      fetch(`${urlEmpleados}/medicos/especialidades`)
         .then(result => result.json())
         .then(json => {
           console.log(json);
@@ -31,7 +30,7 @@ const medicosController = () => {
     getMedicosEspecialidad: (req, res, next) => {
       const { idEspecialidad } = req.params;
 
-      fetch(`${dominio}:${port}/medicos/especialidad/${idEspecialidad}`)
+      fetch(`${urlEmpleados}/medicos/especialidad/${idEspecialidad}`)
         .then(result => {
           return result.json();
         })

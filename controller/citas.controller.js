@@ -3,12 +3,12 @@ import config from '../config/config.js';
 import { ErrorHandler } from '../errorHandler/errorHandler.js';
 
 const citasController = () => {
-  const dominio = config.dominio;
-  const port = config.portCitas;
+  
+  const {urlCitas} = config
 
   return {
     getCitas: (req, res, next) => {
-      fetch(`${dominio}:${port}/citas`)
+      fetch(`${urlCitas}/citas`)
         .then(result => result.json())
         .then(json => {
           if (json.error) {
@@ -28,7 +28,7 @@ const citasController = () => {
 
       console.log({ ...req.body });
 
-      fetch(`${dominio}:${port}/citas/agendar`, {
+      fetch(`${urlCitas}/citas/agendar`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Indica que se envía un cuerpo JSON
@@ -76,7 +76,7 @@ const citasController = () => {
           idDia,
         };
 
-        fetch(`${dominio}:${port}/medicos/horario`, {
+        fetch(`${urlCitas}/medicos/horario`, {
           headers: {
             'content-type': 'application/json',
           },
@@ -116,7 +116,7 @@ const citasController = () => {
     getDiasTrabajoMedico: (req, res, next) => {
       const { idMedico } = req.params;
 
-      fetch(`${dominio}:${port}/medicos/${idMedico}/dias-citas`)
+      fetch(`${urlCitas}/medicos/${idMedico}/dias-citas`)
         .then(result => result.json())
         .then(json => {
           if (json.error) {

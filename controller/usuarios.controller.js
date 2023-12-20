@@ -6,8 +6,9 @@ import sharp from 'sharp';
 import { ErrorHandler } from '../errorHandler/errorHandler.js';
 
 export default () => {
-  const dominio = config.dominio;
-  const port = config.portUsuarios;
+  
+  const {urlUsuarios} = config
+
   return {
     multerUploadImage: multer({
       fileFilter: (req, file, cb) => {
@@ -36,7 +37,7 @@ export default () => {
           formData.append('imagenPerfil', new File([req.file.buffer], req.file.originalname, { type: req.file.mimetype }));
           formData.append('idUsuario', JSON.stringify(idUsuario));
 
-          fetch(`${dominio}:${port}/usuario/perfil/${idUsuario}/actualizar-imagen`, {
+          fetch(`${urlUsuarios}/usuario/perfil/${idUsuario}/actualizar-imagen`, {
             method: 'PATCH',
             body: formData,
           })
@@ -73,7 +74,7 @@ export default () => {
           throw newError;
         }
 
-        fetch(`${dominio}:${port}/usuario/perfil/${idUsuario}/${ancho}x${alto}`)
+        fetch(`${urlUsuarios}/usuario/perfil/${idUsuario}/${ancho}x${alto}`)
           .then(response => {
             if (!response.ok) {
               return response.json().then(json => {

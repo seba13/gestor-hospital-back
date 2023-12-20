@@ -1,5 +1,5 @@
 import express from 'express';
-import config from '../../config/config.js';
+import config from './src/config/config.js';
 import { errorMessage, errorHandler } from './src/errorHandler/errorHandler.js';
 import indexRoutes from './src/routes/indexRoutes.js';
 const app = express();

@@ -1,4 +1,4 @@
-import { pool } from '../../../../config/db.js';
+import { pool } from '../config/db.js';
 import ErrorHandler from '../errorHandler/errorHandler.js';
 
 const promise = pool.promise();

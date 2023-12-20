@@ -1,9 +1,9 @@
-import config from '../../../../config/config.js';
+import config from '../config/config.js';
 
-const { dominio, portUsuarios } = config;
+const { urlUsuarios } = config;
 
 export const fetchPersonaRegistrada = async ({ rut }) => {
-  const fetchPersona = await fetch(`${dominio}:${portUsuarios}/persona-registrada`, {
+  const fetchPersona = await fetch(`${urlUsuarios}/persona-registrada`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -15,7 +15,7 @@ export const fetchPersonaRegistrada = async ({ rut }) => {
 };
 
 export const fetchValidarEmailPersona = async ({ rut, email }) => {
-  const fetchValidarEmail = await fetch(`${dominio}:${portUsuarios}/validar-email`, {
+  const fetchValidarEmail = await fetch(`${urlUsuarios}/validar-email`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -27,7 +27,7 @@ export const fetchValidarEmailPersona = async ({ rut, email }) => {
 };
 
 export const fetchRegistrarUsuario = async ({ rut, dv, email, nombre, paterno, materno, idRol, telefono }) => {
-  const fetchRegistrarUsuario = await fetch(`${dominio}:${portUsuarios}/registrar-usuario`, {
+  const fetchRegistrarUsuario = await fetch(`${urlUsuarios}/registrar-usuario`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -43,7 +43,7 @@ export const fetchRegistrarUsuario = async ({ rut, dv, email, nombre, paterno, m
 };
 
 export const fetchObtenerIdPacienteRut = async ({ rut }) => {
-  const fetchIdPaciente = await fetch(`${dominio}:${portUsuarios}/usuario/obtener-idpaciente`, {
+  const fetchIdPaciente = await fetch(`${urlUsuarios}/usuario/obtener-idpaciente`, {
     headers: {
       'Content-Type': 'application/json',
     },

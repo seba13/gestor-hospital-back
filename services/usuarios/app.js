@@ -1,5 +1,5 @@
 import express from 'express';
-import config from '../../config/config.js';
+import config from './src/config/config.js';
 import indexRoutes from './src/routes/indexRoutes.js';
 import { errorMessage, errorHandler } from './src/errorHandler/errorHandler.js';
 
@@ -8,10 +8,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(indexRoutes);
-
-
-
-
 
 app.use(errorMessage, errorHandler);
 

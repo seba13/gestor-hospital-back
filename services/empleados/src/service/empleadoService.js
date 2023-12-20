@@ -1,4 +1,4 @@
-import config from '../../../../config/config.js';
+import config from '../config/config.js'
 
 import { getEspecialidadesMedicas, getEspecialidadesPorId, getFechas, getMedicosEspecialidad } from '../models/empleadoModel.js';
 
