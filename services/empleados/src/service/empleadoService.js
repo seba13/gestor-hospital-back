@@ -1,5 +1,3 @@
-import config from '../config/config.js'
-
 import { getEspecialidadesMedicas, getEspecialidadesPorId, getFechas, getMedicosEspecialidad } from '../models/empleadoModel.js';
 
 export default () => {
@@ -24,7 +22,7 @@ export default () => {
           console.log(key);
         }
 
-        curr.imagenUrl = `${config.dominio}:${config.appPort}/usuario/perfil/${curr.idUsuario}/300x300`;
+        curr.imagenUrl = `/usuario/perfil/${curr.idUsuario}/300x300`;
 
         prev.push(curr);
 
