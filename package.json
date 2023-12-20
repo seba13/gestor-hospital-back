@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node app.js",
     "dev": "nodemon app.js",
     "m1": "nodemon node services/empleados/app.js",
     "m2": "nodemon node services/citas/app.js",
