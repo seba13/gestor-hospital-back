@@ -47,8 +47,8 @@ export default () => {
         // const buffer = Buffer.from(req.file.buffer);
 
         sharp(req.file.buffer)
-          .resize({ width: 400, height: 400, fit: 'cover', position: 'top' })
-          [ext]([config][ext])
+          .resize({ width: 600, height: 600, fit: 'cover', position: 'top' })
+          [ext](config[ext])
           .toBuffer()
           .then(data => {
             const formData = new FormData();
